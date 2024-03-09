@@ -16,7 +16,19 @@
 
 void kernel_init()
 {
-    u8 data = inb(CRT_DATA_REG);
+    // 获取当前光标位置
+    outb(CRT_ADDR_REG,CRT_CURSOR_H);
+    u16 pos = inb(CRT_DATA_REG) << 8;
+    outb(CRT_ADDR_REG,CRT_CURSOR_L);
+    pos |= inb(CRT_DATA_REG);
+
+    //写入光标位置
+    outb(CRT_ADDR_REG, CRT_CURSOR_H);
+    outb(CRT_DATA_REG, 0);
+    outb(CRT_ADDR_REG, CRT_CURSOR_L);
+    outb(CRT_DATA_REG, 0);
+
+
 
     
 }
