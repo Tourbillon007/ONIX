@@ -105,27 +105,15 @@ protect_mode:
 
     mov esp, 0x10000; 修改栈顶
 
-    sub esp, 4 * 3; 三个变量
-    mov dword [esp], 0; 读出的数量
-    mov dword [esp + 4], 10     ; ecx 初始扇区位置
-    mov dword [esp + 8], 0x18000; edi 目标内存位置
-    BLOCK_SIZE equ 200          ; 一次读取的扇区数量
+    mov edi, 0x10000; 读取的目标内存
+    mov ecx, 10; 起始扇区
+    mov bl, 200; 扇区数量
 
-.read_block:
+    call read_disk
 
-    mov edi, [esp + 8]  ; 读取的目标内存
-    mov ecx, [esp + 4]  ; 起始扇区
-    mov bl, BLOCK_SIZE  ; 扇区数量
+    jmp dword code_selector:0x10000
 
-    call read_disk ; 读取内核
-
-    add dword [esp + 8], BLOCK_SIZE * 512  ; edi 目标内存位置
-    add dword [esp + 4], BLOCK_SIZE        ; ecx 初始扇区位置
-
-   
-    jmp dword code_selector:0x20000
-
-    ud2; 表示出错
+    ud2;
 
 read_disk:
 

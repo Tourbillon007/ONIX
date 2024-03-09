@@ -5,7 +5,6 @@ ENTRYPOINT:=0x10000
 
 
 CFLAGS:= -m32 					# 32 位的程序
-CFLAGS+= -march=pentium			# pentium 处理器
 CFLAGS+= -fno-builtin			# 不需要 gcc 内置函数
 CFLAGS+= -nostdinc				# 不需要标准头文件
 CFLAGS+= -fno-pic				# 不需要位置无关的代码  position independent code
@@ -30,9 +29,11 @@ $(BUILD)/kernel/%.o: $(SRC)/kernel/%.c
 	$(shell mkdir -p $(dir $@))
 	gcc $(CFLAGS) $(DEBUG) $(INCLUDE) -c $< -o $@	
 
-$(BUILD)/kernel.bin: $(BUILD)/kernel/start.o \
-	$(BUILD)/kernel/main.o
-
+$(BUILD)/kernel.bin: \
+	$(BUILD)/kernel/start.o \
+	$(BUILD)/kernel/main.o \
+	$(BUILD)/kernel/io.o 
+	
 	$(shell mkdir -p $(dir $@))
 	ld -m elf_i386 -static $^ -o $@ -Ttext $(ENTRYPOINT)
 
@@ -81,3 +82,9 @@ qemug: $(BUILD)/master.img
 	-m 32m \
 	-boot c \
 	-hda $<	
+
+$(BUILD)/master.vmdk:$(BUILD)/master.img
+	qemu-img convert -O vmdk $< $@	
+
+.PHONY:vmdk
+vmdk:$(BUILD)/master.vmdk
