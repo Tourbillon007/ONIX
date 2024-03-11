@@ -1,5 +1,6 @@
 {
     "files.associations": {
         "onix.h": "c"
-    }
+    },
+    "C_Cpp.errorSquiggles": "disabled"
 }
