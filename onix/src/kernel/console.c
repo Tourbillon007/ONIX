@@ -33,7 +33,7 @@
 
 static u32 screen; //当前显示器开始的内存位置
 static u32 pos; //记录当前光标的位置
-static u32  x, y; //当前光标的坐标
+static u32 x, y; //当前光标的坐标
 
 static u8 attr = 7; //字符样式
 static u16 erase = 0x0720; //空格
@@ -99,7 +99,7 @@ void console_clear()
     set_screen();
 
     u16 *ptr = (u16 *)MEM_BASE;
-    while(ptr < MEM_END) //这里没问题，因为ptr自己的地址就是MEM_BASE开始的。
+    while(ptr < (u16 *)MEM_END) //这里没问题，因为ptr自己的地址就是MEM_BASE开始的。
     {
         *ptr++ = erase;
     }
@@ -122,7 +122,7 @@ static void scroll_up()
     }
     else
     {
-        memcpy(MEM_BASE, screen, SCR_SIZE);//把显示的内存覆盖到mem_base的位置，相当于像环形内存那样
+        memcpy((void *)MEM_BASE, (void *)screen, SCR_SIZE);//把显示的内存覆盖到mem_base的位置，相当于像环形内存那样
         pos -= (screen  - MEM_BASE);
         screen = MEM_BASE;
     }
@@ -233,7 +233,7 @@ void console_init()
     // set_screen();
     // get_screen();
     // pos = 1 + MEM_BASE;
-    set_cursor();
+    
 
 
 }

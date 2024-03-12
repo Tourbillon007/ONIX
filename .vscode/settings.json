@@ -12,7 +12,8 @@
         "limits": "c",
         "tuple": "c",
         "variant": "c",
-        "*.inc": "c"
+        "*.inc": "c",
+        "cstdarg": "c"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }
