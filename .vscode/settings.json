@@ -1,6 +1,18 @@
 {
     "files.associations": {
-        "onix.h": "c"
+        "onix.h": "c",
+        "charconv": "c",
+        "*.hex": "c",
+        "bit": "c",
+        "*.tcc": "c",
+        "cmath": "c",
+        "list": "c",
+        "functional": "c",
+        "random": "c",
+        "limits": "c",
+        "tuple": "c",
+        "variant": "c",
+        "*.inc": "c"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }

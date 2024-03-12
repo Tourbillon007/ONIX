@@ -19,26 +19,26 @@
 #define ROW_SIZE (WIDTH * 2)          // 每行字节数
 #define SCR_SIZE (ROW_SIZE * HEIGHT)  // 屏幕字节数
 
-#define NUL 0x00
-#define ENQ 0x05
-#define ESC 0x1B // ESC
-#define BEL 0x07 // \a
-#define BS 0x08  // \b
-#define HT 0x09  // \t
-#define LF 0x0A  // \n
-#define VT 0x0B  // \v
-#define FF 0x0C  // \f
-#define CR 0x0D  // \r
-#define DEL 0x7F
+#define ASCII_NUL 0x00
+#define ASCII_ENQ 0x05
+#define ASCII_ESC 0x1B // ESC
+#define ASCII_BEL 0x07 // \a
+#define ASCII_BS 0x08  // \b
+#define ASCII_HT 0x09  // \t
+#define ASCII_LF 0x0A  // \n
+#define ASCII_VT 0x0B  // \v
+#define ASCII_FF 0x0C  // \f
+#define ASCII_CR 0x0D  // \r
+#define ASCII_DEL 0x7F
 
 static u32 screen; //当前显示器开始的内存位置
-
 static u32 pos; //记录当前光标的位置
-
 static u32  x, y; //当前光标的坐标
 
 static u8 attr = 7; //字符样式
 static u16 erase = 0x0720; //空格
+
+
 
 // 得到当前显示器开始的位置
 static void get_screen()
@@ -90,19 +90,149 @@ static void set_cursor()
     outb(CRT_DATA_REG, ((pos - MEM_BASE) >> 1) & 0xff);
 }
 
-void console_clear();
+void console_clear()
+{
+    screen = MEM_BASE;
+    pos = MEM_BASE;
+    x = y = 0;
+    set_cursor();
+    set_screen();
 
-void console_write(char *buf, u32 count);
+    u16 *ptr = (u16 *)MEM_BASE;
+    while(ptr < MEM_END) //这里没问题，因为ptr自己的地址就是MEM_BASE开始的。
+    {
+        *ptr++ = erase;
+    }
+
+}
+
+//向上滚屏一行
+static void scroll_up()
+{
+    if(screen + SCR_SIZE + ROW_SIZE < MEM_END)
+    {
+        u32 *ptr = (u32 *)(screen + SCR_SIZE);//指向屏幕起始地址加上屏幕大小的位置，即下一行的起始位置。
+        for (size_t i = 0; i < WIDTH; i++)
+        {
+            *ptr++ = erase;
+        }
+        screen += ROW_SIZE;
+        pos += ROW_SIZE;
+        
+    }
+    else
+    {
+        memcpy(MEM_BASE, screen, SCR_SIZE);//把显示的内存覆盖到mem_base的位置，相当于像环形内存那样
+        pos -= (screen  - MEM_BASE);
+        screen = MEM_BASE;
+    }
+    set_screen();
+}
+
+static void command_lf()
+{
+    if(y + 1 < HEIGHT)
+    {
+        y++;
+        pos += ROW_SIZE;
+        return;
+    }
+    scroll_up();
+}
+
+static void command_cr()
+{
+    pos -= (x << 1);
+    x = 0;
+}
+
+static void command_bs()
+{
+    if(x)
+    {
+        x--;
+        pos -= 2;
+        *(u16 *)pos = erase;
+    }
+}
+
+static void command_del()
+{
+    
+    *(u16 *)pos = erase;
+    
+}
+
+void console_write(char *buf, u32 count)
+{
+    char ch;
+    char *ptr = (char *)pos;
+    while(count--)
+    {
+        ch = *buf++;
+        switch (ch)
+        {
+        case ASCII_NUL:
+            /* code */
+            break;
+        case ASCII_ESC:
+            /* code */
+            break;
+        case ASCII_BEL:
+            //
+            break;
+        case ASCII_BS:
+            command_bs();
+            break;
+        case ASCII_HT:
+            
+            break;
+        case ASCII_LF:
+            command_lf();
+            command_cr();
+            break;
+        case ASCII_VT:
+            /* code */
+            break;
+        case ASCII_FF:
+            command_lf();
+            break;
+        case ASCII_CR:
+            command_cr();
+            break;
+        case ASCII_DEL:
+            command_del();
+            break;
+      
+        default:
+        if(x >= WIDTH)
+        {
+            x -= WIDTH;
+            pos -= ROW_SIZE;
+            command_lf();
+        }
+        *ptr = ch;
+        ptr++;
+        *ptr = attr;
+        ptr++;
+        pos += 2;
+        x++;
+            break;
+        }       
+
+    }
+    set_cursor();
+}
 
 void console_init()
 {
-    // void console_clear();
+    console_clear();
     // get_screen();
     // screen = 80 + 10 + MEM_BASE;
 
     // set_screen();
     // get_screen();
-    pos = 124 + MEM_BASE;
+    // pos = 1 + MEM_BASE;
     set_cursor();
 
 
