@@ -36,6 +36,12 @@ $(BUILD)/kernel.bin: \
 	$(BUILD)/kernel/console.o \
 	$(BUILD)/kernel/printk.o \
 	$(BUILD)/kernel/assert.o \
+	$(BUILD)/kernel/debug.o \
+	$(BUILD)/kernel/global.o \
+	$(BUILD)/kernel/task.o \
+	$(BUILD)/kernel/schedule.o \
+	$(BUILD)/kernel/interrupt.o \
+	$(BUILD)/kernel/handler.o \
 	$(BUILD)/lib/string.o  \
 	$(BUILD)/lib/vsprintf.o \
 
@@ -59,6 +65,7 @@ $(BUILD)/master.img:$(BUILD)/boot/boot.bin \
 	dd if=$(BUILD)/boot/loader.bin of=$@ bs=512 count=4 seek=2 conv=notrunc
 	dd if=$(BUILD)/system.bin of=$@ bs=512 count=200 seek=10 conv=notrunc
 	# rm -rf master.img.lock
+	
 
 test: $(BUILD)/master.img
 

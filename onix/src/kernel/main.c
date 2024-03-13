@@ -6,6 +6,10 @@
 #include <onix/stdarg.h>
 #include <onix/printk.h>
 #include <onix/assert.h>
+#include <onix/debug.h>
+#include <onix/global.h>
+#include <onix/task.h>
+#include <onix/interrupt.h>
 
 
 
@@ -15,8 +19,9 @@ void kernel_init()
  
     console_init();
    
-    assert(3 < 5);
-    assert(3 > 5);
+    gdt_init();
+    interrupt_init();
+    
    
 
 
