@@ -19,6 +19,8 @@
 
 #define LOGK(fmt, args...) DEBUGK(fmt, ##args)
 
+//切换进程
+
 extern u32 volatile jiffies;
 extern u32 jiffy;
 extern bitmap_t kernel_map;
