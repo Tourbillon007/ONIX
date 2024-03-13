@@ -1,5 +1,6 @@
 [bits 32]
 
+; 切换进程或线程时的操作
 section .text
 
 global task_switch
