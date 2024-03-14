@@ -19,6 +19,9 @@
 // 用于定义特殊的结构体
 #define _packed __attribute__((packed))
 
+//用于省略特定函数的栈帧。
+#define _ofp __attribute__((optimize("omit-frame-pointer")))
+
 
 
 typedef unsigned int size_t;

@@ -10,16 +10,16 @@
 #define PIT_CTRL_REG 0X43
 
 #define HZ 100
-#define OSCILLATOR 1193182
-#define CLOCK_COUNTER (OSCILLATOR / HZ)
-#define JIFFY (1000 / HZ)
+#define OSCILLATOR 1193182 //振荡器的频率
+#define CLOCK_COUNTER (OSCILLATOR / HZ) //定义了计时器的计数器值，用于实现特定频率的时钟中断。
+#define JIFFY (1000 / HZ)  //Tick。定义了一个时间单位，表示时钟中断的时间间隔。
 
-#define SPEAKER_REG 0x61
+#define SPEAKER_REG 0x61 //键盘控制器中的端口号(寄存器)
 #define BEEP_HZ 440
 #define BEEP_COUNTER (OSCILLATOR / BEEP_HZ)
 #define BEEP_MS 100
 
-u32 volatile jiffies = 0;
+u32 volatile jiffies = 0; //表示系统开机以来的节拍数（tick），即经历的节拍数量。即时钟周期
 u32 jiffy = JIFFY;
 
 bool volatile beeping = 0;
@@ -66,6 +66,7 @@ time_t sys_time()
     return startup_time + (jiffies * JIFFY) / 1000;
 }
 
+//计数器初始化
 void pit_init()
 {
     // 配置计数器 0 时钟
