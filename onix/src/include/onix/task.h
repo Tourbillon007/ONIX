@@ -2,8 +2,8 @@
 #define ONIX_TASK_H
 
 #include <onix/types.h>
-#include <onix/list.h>
-#include <onix/signal.h>
+// #include <onix/list.h>
+// #include <onix/signal.h>
 
 #define KERNEL_USER 0
 #define NORMAL_USER 1000

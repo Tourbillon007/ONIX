@@ -109,24 +109,22 @@ void console_clear()
 //向上滚屏一行
 static void scroll_up()
 {
-    if(screen + SCR_SIZE + ROW_SIZE < MEM_END)
-    {
-        u32 *ptr = (u32 *)(screen + SCR_SIZE);//指向屏幕起始地址加上屏幕大小的位置，即下一行的起始位置。
-        for (size_t i = 0; i < WIDTH; i++)
-        {
-            *ptr++ = erase;
-        }
-        screen += ROW_SIZE;
-        pos += ROW_SIZE;
-        
-    }
-    else
+    if(screen + SCR_SIZE + ROW_SIZE >= MEM_END)
     {
         memcpy((void *)MEM_BASE, (void *)screen, SCR_SIZE);//把显示的内存覆盖到mem_base的位置，相当于像环形内存那样
         pos -= (screen  - MEM_BASE);
         screen = MEM_BASE;
     }
+    
+    u32 *ptr = (u32 *)(screen + SCR_SIZE);//指向屏幕起始地址加上屏幕大小的位置，即下一行的起始位置。
+    for (size_t i = 0; i < WIDTH; i++)
+    {
+        *ptr++ = erase;
+    }
+    screen += ROW_SIZE;
+    pos += ROW_SIZE;
     set_screen();
+    
 }
 
 static void command_lf()
