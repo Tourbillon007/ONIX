@@ -115,7 +115,7 @@ static void scroll_up()
         pos -= (screen  - MEM_BASE);
         screen = MEM_BASE;
     }
-    
+
     u32 *ptr = (u32 *)(screen + SCR_SIZE);//指向屏幕起始地址加上屏幕大小的位置，即下一行的起始位置。
     for (size_t i = 0; i < WIDTH; i++)
     {
@@ -161,6 +161,8 @@ static void command_del()
     
 }
 
+extern void start_beep();
+
 void console_write(char *buf, u32 count)
 {
     char ch;
@@ -177,7 +179,7 @@ void console_write(char *buf, u32 count)
             /* code */
             break;
         case ASCII_BEL:
-            //
+            start_beep();
             break;
         case ASCII_BS:
             command_bs();
