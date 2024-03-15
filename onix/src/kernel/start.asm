@@ -1,14 +1,20 @@
 [bits 32]
 
 extern kernel_init
+extern console_init
+extern memory_init
+extern gdt_init
 
 global _start
 _start:
+    push ebx; ards_count
+    push eax; magic
 
-    call kernel_init
-    xchg bx, bx
-    int 0x80 ; 调用中断函数 系统调用
+    call console_init; 控制台初始化
+    call gdt_init;     全局描述符初始化
+    call memory_init;  内存初始化
+    call kernel_init;  内核初始化
 
-    jmp $
+    jmp $ ;阻塞
 
 

@@ -1,3 +1,7 @@
+/*
+    一些通用宏
+
+*/
 #ifndef ONIX_TYPES_H
 #define ONIX_TYPES_H
 
@@ -9,11 +13,11 @@
 
 #define EOS '\0' // 字符串结尾
 
-
+#ifndef __cplusplus
 #define bool _Bool
 #define true 1
 #define false 0
-
+#endif
 
 
 // 用于定义特殊的结构体
