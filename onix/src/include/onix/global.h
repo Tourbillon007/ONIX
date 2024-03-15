@@ -51,38 +51,38 @@ typedef struct pointer_t
     u32 base;
 } _packed pointer_t;
 
-// typedef struct tss_t
-// {
-//     u32 backlink; // 前一个任务的链接，保存了前一个任状态段的段选择子
-//     u32 esp0;     // ring0 的栈顶地址
-//     u32 ss0;      // ring0 的栈段选择子
-//     u32 esp1;     // ring1 的栈顶地址
-//     u32 ss1;      // ring1 的栈段选择子
-//     u32 esp2;     // ring2 的栈顶地址
-//     u32 ss2;      // ring2 的栈段选择子
-//     u32 cr3;
-//     u32 eip;
-//     u32 flags;
-//     u32 eax;
-//     u32 ecx;
-//     u32 edx;
-//     u32 ebx;
-//     u32 esp;
-//     u32 ebp;
-//     u32 esi;
-//     u32 edi;
-//     u32 es;
-//     u32 cs;
-//     u32 ss;
-//     u32 ds;
-//     u32 fs;
-//     u32 gs;
-//     u32 ldtr;          // 局部描述符选择子
-//     u16 trace : 1;     // 如果置位，任务切换时将引发一个调试异常
-//     u16 reversed : 15; // 保留不用
-//     u16 iobase;        // I/O 位图基地址，16 位从 TSS 到 IO 权限位图的偏移
-//     u32 ssp;           // 任务影子栈指针
-// } _packed tss_t;
+typedef struct tss_t
+{
+    u32 backlink; // 前一个任务的链接，保存了前一个任状态段的段选择子
+    u32 esp0;     // ring0 的栈顶地址
+    u32 ss0;      // ring0 的栈段选择子
+    u32 esp1;     // ring1 的栈顶地址
+    u32 ss1;      // ring1 的栈段选择子
+    u32 esp2;     // ring2 的栈顶地址
+    u32 ss2;      // ring2 的栈段选择子
+    u32 cr3;
+    u32 eip;
+    u32 flags;
+    u32 eax;
+    u32 ecx;
+    u32 edx;
+    u32 ebx;
+    u32 esp;
+    u32 ebp;
+    u32 esi;
+    u32 edi;
+    u32 es;
+    u32 cs;
+    u32 ss;
+    u32 ds;
+    u32 fs;
+    u32 gs;
+    u32 ldtr;          // 局部描述符选择子
+    u16 trace : 1;     // 如果置位，任务切换时将引发一个调试异常
+    u16 reversed : 15; // 保留不用
+    u16 iobase;        // I/O 位图基地址，16 位从 TSS 到 IO 权限位图的偏移
+    u32 ssp;           // 任务影子栈指针
+} _packed tss_t;
 
 void gdt_init();
 

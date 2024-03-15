@@ -13,7 +13,8 @@
         "tuple": "c",
         "variant": "c",
         "*.inc": "c",
-        "cstdarg": "c"
+        "cstdarg": "c",
+        "memory.h": "c"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }

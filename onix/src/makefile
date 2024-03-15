@@ -62,11 +62,16 @@ $(BUILD)/master.img:$(BUILD)/boot/boot.bin \
 	$(BUILD)/boot/loader.bin \
 	$(BUILD)/system.bin \
 	$(BUILD)/system.map
-
+#创建一个16m的硬盘镜像
 	yes | bximage -q -hd=16 -func=create -sectsize=512 -imgmode=flat $@
+#将boot.bin写入主引导扇区	
 	dd if=$(BUILD)/boot/boot.bin of=$@ bs=512 count=1 conv=notrunc
+#将loader.bin写入硬盘	
 	dd if=$(BUILD)/boot/loader.bin of=$@ bs=512 count=4 seek=2 conv=notrunc
+#测试system.bin小于100k，否则就修改下面的count	
 	dd if=$(BUILD)/system.bin of=$@ bs=512 count=200 seek=10 conv=notrunc
+#将systrm.bin写入硬盘
+	test -n "$$(find$(BUILD)/system.bin -size -100k)"	
 	# rm -rf master.img.lock
 	
 

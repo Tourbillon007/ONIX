@@ -16,11 +16,16 @@
 
 void kernel_init()
 {
- 
+    memory_map_init();
+    interrupt_init();
+    clock_init();
+    time_init();
+    rtc_init();
+
     console_init();
    
     gdt_init();
-    interrupt_init();
+
     
    
 
