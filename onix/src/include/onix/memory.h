@@ -36,6 +36,7 @@
 // 内核页目录索引
 #define KERNEL_PAGE_DIR 0x1000
 
+//页表项
 typedef struct page_entry_t
 {
     u8 present : 1;  // 在内存中
